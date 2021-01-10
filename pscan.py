@@ -44,6 +44,7 @@ class Page():
         self.code = 0
         self.length = 0
         self.data = ""
+        self.headers = dict()
         self.domain = ""
         self.scheme = ""
 
@@ -53,6 +54,7 @@ class Page():
         try:
             r = requests.get(self.url, verify = False, headers = headers)
             self.data = r.text
+            self.headers = r.headers
             self.length = len(r.text)
             self.code = r.status_code
             return True
@@ -162,7 +164,7 @@ def con_report(dic):
     print('=> Subdomains links: %d' % dic["subdomain"])
     print('=> External links: %d' % dic["external"])
     print('\n=> CMS: %s' % dic["cms"])
-    print('=> CMS version: %s' % dic["version"])
+    print('=> CMS version: %s' % dic["cms_version"])
     print('\n')
     return True
 
@@ -170,7 +172,7 @@ def con_header():
     print('\n****************************************************************************\n\
 *                           => Pscan <=                                    *\n\
 *                                                                          *\n\
-* Version: 0.2                                                             *\n\
+* Version: 0.3                                                             *\n\
 *                                                                          *\n\
 ****************************************************************************\n')
 
@@ -214,6 +216,7 @@ def entry_point():
     report["subdomain"] = dict()
     report["external"] = dict()
 
+    # getting links
     for link in soup.find_all('a'):
 
         if link.get('href') is not None:
@@ -241,8 +244,16 @@ def entry_point():
         cms_obj.get_version()
 
     report["cms"] = cms_obj.cms
-    report["version"] = cms_obj.version
+    report["cms_version"] = cms_obj.version
 
+    # getting security headers
+    report["sec_headers"] = dict()
+    report["sec_headers"]["X-XSS-Protection"] = pg.headers.get("X-XSS-Protection")
+    report["sec_headers"]["X-Frame-Options"] = pg.headers.get("X-Frame-Options")
+    report["sec_headers"]["X-Content-Type-Options"] = pg.headers.get("X-Content-Type-Options")
+    report["sec_headers"]["Content-Security-Policy"] = pg.headers.get("Content-Security-Policy")
+    report["sec_headers"]["Strict-Transport-Security"] = pg.headers.get("Strict-Transport-Security")
+    report["sec_headers"]["Public-Key-Pins"] = pg.headers.get("Public-Key-Pins")
 
     # write a report to a file
     with open(file_out, 'w') as json_file:
@@ -255,7 +266,7 @@ def entry_point():
     console_report["subdomain"] = len(report["subdomain"])
     console_report["external"] = len(report["external"])
     console_report["cms"] = report["cms"]
-    console_report["version"] = report["version"]
+    console_report["cms_version"] = report["cms_version"]
     con_report(console_report)
 
     return True
