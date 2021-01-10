@@ -7,7 +7,7 @@
 * Pscan is a simple web analyzing tool, used to crawl web-pages and extract structured data.                 *
 * It can be used for a wide range of purposes, from data mining to monitoring and penetration testing.       *
 *                                                                                                            *
-* Version: 0.2                                                                                               *
+* Version: 0.3                                                                                               *
 * Installing:                                                                                                *
 *	pip3 -v install bs4											                                             *
 *                                                                                                            *
