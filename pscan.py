@@ -7,7 +7,7 @@
 * Pscan is a simple web analyzing tool, used to crawl web-pages and extract structured data.                 *
 * It can be used for a wide range of purposes, from data mining to monitoring and penetration testing.       *
 *                                                                                                            *
-* Version: 0.3                                                                                               *
+* Version: 0.3.1                                                                                             *
 * Installing:                                                                                                *
 *	pip3 -v install bs4											                                             *
 *                                                                                                            *
@@ -37,7 +37,7 @@ BASE_SCHEME = "http"
 # ==============================================================================
 
 class Page():
-    """Class Page is class for storaging and processing a url"""
+    """Class Page is a class for storaging and processing a url"""
 
     def __init__(self, url = "empty"):
         self.url = url
@@ -128,6 +128,23 @@ class Page():
 
 # ==============================================================================
 
+class Domain():
+    """Domain class contains an information about IP, netname and so on"""
+
+    def __init__(self, domain = "empty"):
+        # super(Domain, self).__init__()
+        self.domain = domain
+        self.ip = ""
+        self.whois_netname = ""
+
+    def get_ip(self):
+        pass
+
+    def get_netname(self):
+        pass
+
+# ==============================================================================
+
 def usage():
     con_header()
     print(
@@ -172,7 +189,7 @@ def con_header():
     print('\n****************************************************************************\n\
 *                           => Pscan <=                                    *\n\
 *                                                                          *\n\
-* Version: 0.3                                                             *\n\
+* Version: 0.3.1                                                           *\n\
 *                                                                          *\n\
 ****************************************************************************\n')
 
