@@ -24,6 +24,9 @@ import json, urllib3
 
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
+from ipwhois import IPWhois
+
+from pprint import pprint
 
 from cms import CMS
 
@@ -132,16 +135,28 @@ class Domain():
     """Domain class contains an information about IP, netname and so on"""
 
     def __init__(self, domain = "empty"):
-        # super(Domain, self).__init__()
         self.domain = domain
         self.ip = ""
-        self.whois_netname = ""
+        self.whois = ""
 
     def get_ip(self):
-        pass
+        try:
+            self.ip = socket.gethostbyname(self.domain)
+        except:
+            self.ip = "undefined"
+        return True
 
     def get_netname(self):
-        pass
+        obj = IPWhois(self.ip)
+        try:
+            res = obj.lookup_rdap(asn_methods = ['whois'])
+            if res['network']['name'] is not None:
+                self.whois = res['network']['name']
+            if res['network']['country'] is not None:
+                self.whois += " - " + res['network']['country']
+        except:
+            self.whois = "undefined"
+        return True
 
 # ==============================================================================
 
@@ -263,7 +278,7 @@ def entry_point():
     report["cms"] = cms_obj.cms
     report["cms_version"] = cms_obj.version
 
-    # getting security headers
+    # getting of security headers
     report["sec_headers"] = dict()
     report["sec_headers"]["X-XSS-Protection"] = pg.headers.get("X-XSS-Protection")
     report["sec_headers"]["X-Frame-Options"] = pg.headers.get("X-Frame-Options")
@@ -271,6 +286,15 @@ def entry_point():
     report["sec_headers"]["Content-Security-Policy"] = pg.headers.get("Content-Security-Policy")
     report["sec_headers"]["Strict-Transport-Security"] = pg.headers.get("Strict-Transport-Security")
     report["sec_headers"]["Public-Key-Pins"] = pg.headers.get("Public-Key-Pins")
+
+    # getting of IP and whois
+    dmn_obj = Domain(pg.domain)
+    dmn_obj.get_ip()
+    if dmn_obj.ip != "undefined":
+        dmn_obj.get_netname()
+
+    report["domain_ip"] = dmn_obj.ip
+    report["domain_netname"] = dmn_obj.whois
 
     # write a report to a file
     with open(file_out, 'w') as json_file:

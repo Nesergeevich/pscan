@@ -6,11 +6,12 @@ It can be used for a wide range of purposes, from data mining to monitoring and 
 Author: Alexander Pushkin aka @nesergeevich \
 To contact: https://twitter.com/nesergeevich
 
-##### Version: 0.3
+##### Version: 0.3.1
 
 ## Installation:
 ```
 pip3 -v install bs4
+pip3 install ipwhois
 ```
 
 ## Usage:
@@ -29,11 +30,13 @@ Attention! Use a absolute page url. Good luck!
 {
 "basic_url": "https://drupal.org",
 "cms": "Drupal",
-"cms_version": "7.75",
+"cms_version": "7.78",
+"domain_ip": "151.101.66.217",
+"domain_netname": "SKYCA-3",
 "external": {
 "http://drupal.com/trademark": "registered trademark",
+"http://www.prweb.com/releases/on_its_20th_birthday_drupal_poised_to_capture_the_next_generation_of_the_digital_experience_market/prweb17664393.htm": "On Its 20th Birthday, Drupal Poised To Capture The Next Generation Of The Digital Experience Market",
 "https://acquia.com": "Acquia",
-"https://dri.es": "Dries Buytaert",
 ...
 "https://www.srijan.net/": "",
 "https://www.thirdandgrove.com/": ""
@@ -41,10 +44,10 @@ Attention! Use a absolute page url. Good luck!
 "internal": {
 "https://drupal.org/#block-system-main-menu": "",
 "https://drupal.org/#block-system-user-menu": "",
-"https://drupal.org/#content": "Skip to main content",
 ...
 "https://www.drupal.org/terms": "Terms of service",
-"https://www.drupal.org/training": "Training"
+"https://www.drupal.org/training": "Training",
+"https://www.drupal.org/try-drupal": "Try Drupal"
 },
 "sec_headers": {
 "Content-Security-Policy": "frame-ancestors 'self'",
@@ -55,12 +58,11 @@ Attention! Use a absolute page url. Good luck!
 "X-XSS-Protection": null
 },
 "subdomain": {
-"http://events.drupal.org/drupalcon2021": "Learn more",
 "https://api.drupal.org/": "API.Drupal.org",
 "https://events.drupal.org": "DrupalCon",
 ...
-"https://jobs.drupal.org/": "Jobs",
-"https://jobs.drupal.org/?utm_source=drupal.org&utm_medium=HPS": "Try It Today"
+"https://groups.drupal.org/groups": "Groups & meetups",
+"https://jobs.drupal.org/": "Jobs"
 }
 }
 ```
