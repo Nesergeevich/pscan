@@ -7,7 +7,7 @@
 * Pscan is a simple web analyzing tool, used to crawl web-pages and extract structured data.                 *
 * It can be used for a wide range of purposes, from data mining to monitoring and penetration testing.       *
 *                                                                                                            *
-* Version: 0.3.1                                                                                             *
+* Version: 0.3.2                                                                                             *
 * Installing:                                                                                                *
 *	pip3 -v install bs4											                                             *
 *                                                                                                            *
@@ -204,7 +204,7 @@ def con_header():
     print('\n****************************************************************************\n\
 *                           => Pscan <=                                    *\n\
 *                                                                          *\n\
-* Version: 0.3.1                                                           *\n\
+* Version: 0.3.2                                                           *\n\
 *                                                                          *\n\
 ****************************************************************************\n')
 
@@ -286,6 +286,21 @@ def entry_point():
     report["sec_headers"]["Content-Security-Policy"] = pg.headers.get("Content-Security-Policy")
     report["sec_headers"]["Strict-Transport-Security"] = pg.headers.get("Strict-Transport-Security")
     report["sec_headers"]["Public-Key-Pins"] = pg.headers.get("Public-Key-Pins")
+
+    # getting of cache headers
+    report["cache_headers"] = dict()
+    report["cache_headers"]["Pragma"] = pg.headers.get("Pragma")
+    report["cache_headers"]["Cache-Control"] = pg.headers.get("Cache-Control")
+    report["cache_headers"]["ETag"] = pg.headers.get("ETag")
+    report["cache_headers"]["Vary"] = pg.headers.get("Vary")
+    report["cache_headers"]["Age"] = pg.headers.get("Age")
+    report["cache_headers"]["Expires"] = pg.headers.get("Expires")
+    report["cache_headers"]["Warning"] = pg.headers.get("Warning")
+
+    # seaching a substring "cache" in an ignore case
+    for head in list(pg.headers):
+        if "cache" in head.lower():
+            report["cache_headers"][head] = pg.headers.get(head)
 
     # getting of IP and whois
     dmn_obj = Domain(pg.domain)
